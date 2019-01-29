@@ -11,4 +11,6 @@ public interface IContractService {
     ServerResponse<PageInfo> getContractList(Integer pageNum, Integer pageSize);
 
     ServerResponse saveOrUpdateProduct(Contract contract);
+
+    ServerResponse delete(String id);
 }

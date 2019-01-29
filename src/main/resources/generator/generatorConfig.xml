@@ -57,8 +57,7 @@
         </javaClientGenerator>
 
 
-        <table tableName="t_account" domainObjectName="Account" ></table>
-        <table tableName="t_contact" domainObjectName="Contact"  ></table>
+
         <table tableName="t_contract" domainObjectName="Contract"  ></table>
 
 

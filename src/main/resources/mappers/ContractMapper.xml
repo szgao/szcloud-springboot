@@ -1,40 +1,42 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.nsccsz.mapper.ContractMapper" >
-  <resultMap id="BaseResultMap" type="com.nsccsz.entity.Contract" >
-    <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="employer" property="employer" jdbcType="VARCHAR" />
-    <result column="userAid" property="userAid" jdbcType="INTEGER" />
-    <result column="laborer" property="laborer" jdbcType="VARCHAR" />
-    <result column="userBid" property="userBid" jdbcType="INTEGER" />
-    <result column="coreness" property="coreness" jdbcType="VARCHAR" />
-    <result column="monthly" property="monthly" jdbcType="VARCHAR" />
-    <result column="hours" property="hours" jdbcType="VARCHAR" />
-    <result column="store" property="store" jdbcType="VARCHAR" />
-    <result column="startTime" property="startTime" jdbcType="TIMESTAMP" />
-    <result column="endTime" property="endTime" jdbcType="TIMESTAMP" />
-    <result column="projectName" property="projectName" jdbcType="VARCHAR" />
-    <result column="field" property="field" jdbcType="VARCHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nsccsz.mapper.ContractMapper">
+  <resultMap id="BaseResultMap" type="com.nsccsz.entity.Contract">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="employer" jdbcType="VARCHAR" property="employer" />
+    <result column="userAid" jdbcType="INTEGER" property="userAid" />
+    <result column="laborer" jdbcType="VARCHAR" property="laborer" />
+    <result column="userBid" jdbcType="INTEGER" property="userBid" />
+    <result column="coreness" jdbcType="VARCHAR" property="coreness" />
+    <result column="monthly" jdbcType="VARCHAR" property="monthly" />
+    <result column="hours" jdbcType="VARCHAR" property="hours" />
+    <result column="store" jdbcType="VARCHAR" property="store" />
+    <result column="startTime" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="endTime" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="projectName" jdbcType="VARCHAR" property="projectName" />
+    <result column="field" jdbcType="VARCHAR" property="field" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -45,25 +47,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -74,191 +76,208 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     id, employer, userAid, laborer, userBid, coreness, monthly, hours, store, startTime, 
-    endTime, projectName, field
+    endTime, projectName, field, status, createTime
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.nsccsz.entity.ContractExample" >
+  <select id="selectByExample" parameterType="com.nsccsz.entity.ContractExample" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from t_contract
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from t_contract
     where id = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from t_contract
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.nsccsz.entity.ContractExample" >
+  <delete id="deleteByExample" parameterType="com.nsccsz.entity.ContractExample">
     delete from t_contract
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.nsccsz.entity.Contract" >
+  <insert id="insert" parameterType="com.nsccsz.entity.Contract">
     insert into t_contract (id, employer, userAid, 
       laborer, userBid, coreness, 
       monthly, hours, store, 
       startTime, endTime, projectName, 
-      field)
+      field, status, createTime
+      )
     values (#{id,jdbcType=VARCHAR}, #{employer,jdbcType=VARCHAR}, #{userAid,jdbcType=INTEGER},
       #{laborer,jdbcType=VARCHAR}, #{userBid,jdbcType=INTEGER}, #{coreness,jdbcType=VARCHAR},
       #{monthly,jdbcType=VARCHAR}, #{hours,jdbcType=VARCHAR}, #{store,jdbcType=VARCHAR},
       #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{projectName,jdbcType=VARCHAR},
-      #{field,jdbcType=VARCHAR})
+      #{field,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.nsccsz.entity.Contract" >
+  <insert id="insertSelective" parameterType="com.nsccsz.entity.Contract">
     insert into t_contract
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         id,
       </if>
-      <if test="employer != null" >
+      <if test="employer != null">
         employer,
       </if>
-      <if test="userAid != null" >
+      <if test="userAid != null">
         userAid,
       </if>
-      <if test="laborer != null" >
+      <if test="laborer != null">
         laborer,
       </if>
-      <if test="userBid != null" >
+      <if test="userBid != null">
         userBid,
       </if>
-      <if test="coreness != null" >
+      <if test="coreness != null">
         coreness,
       </if>
-      <if test="monthly != null" >
+      <if test="monthly != null">
         monthly,
       </if>
-      <if test="hours != null" >
+      <if test="hours != null">
         hours,
       </if>
-      <if test="store != null" >
+      <if test="store != null">
         store,
       </if>
-      <if test="startTime != null" >
+      <if test="startTime != null">
         startTime,
       </if>
-      <if test="endTime != null" >
+      <if test="endTime != null">
         endTime,
       </if>
-      <if test="projectName != null" >
+      <if test="projectName != null">
         projectName,
       </if>
-      <if test="field != null" >
+      <if test="field != null">
         field,
       </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createTime != null">
+        createTime,
+      </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="employer != null" >
+      <if test="employer != null">
         #{employer,jdbcType=VARCHAR},
       </if>
-      <if test="userAid != null" >
+      <if test="userAid != null">
         #{userAid,jdbcType=INTEGER},
       </if>
-      <if test="laborer != null" >
+      <if test="laborer != null">
         #{laborer,jdbcType=VARCHAR},
       </if>
-      <if test="userBid != null" >
+      <if test="userBid != null">
         #{userBid,jdbcType=INTEGER},
       </if>
-      <if test="coreness != null" >
+      <if test="coreness != null">
         #{coreness,jdbcType=VARCHAR},
       </if>
-      <if test="monthly != null" >
+      <if test="monthly != null">
         #{monthly,jdbcType=VARCHAR},
       </if>
-      <if test="hours != null" >
+      <if test="hours != null">
         #{hours,jdbcType=VARCHAR},
       </if>
-      <if test="store != null" >
+      <if test="store != null">
         #{store,jdbcType=VARCHAR},
       </if>
-      <if test="startTime != null" >
+      <if test="startTime != null">
         #{startTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="endTime != null" >
+      <if test="endTime != null">
         #{endTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="projectName != null" >
+      <if test="projectName != null">
         #{projectName,jdbcType=VARCHAR},
       </if>
-      <if test="field != null" >
+      <if test="field != null">
         #{field,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.nsccsz.entity.ContractExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.nsccsz.entity.ContractExample" resultType="java.lang.Integer">
     select count(*) from t_contract
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update t_contract
-    <set >
-      <if test="record.id != null" >
-        id = #{record.id,jdbcType=VARCHAR},
-      </if>
-      <if test="record.employer != null" >
+    <set>
+      <if test="record.employer != null">
         employer = #{record.employer,jdbcType=VARCHAR},
       </if>
-      <if test="record.userAid != null" >
+      <if test="record.userAid != null">
         userAid = #{record.userAid,jdbcType=INTEGER},
       </if>
-      <if test="record.laborer != null" >
+      <if test="record.laborer != null">
         laborer = #{record.laborer,jdbcType=VARCHAR},
       </if>
-      <if test="record.userBid != null" >
+      <if test="record.userBid != null">
         userBid = #{record.userBid,jdbcType=INTEGER},
       </if>
-      <if test="record.coreness != null" >
+      <if test="record.coreness != null">
         coreness = #{record.coreness,jdbcType=VARCHAR},
       </if>
-      <if test="record.monthly != null" >
+      <if test="record.monthly != null">
         monthly = #{record.monthly,jdbcType=VARCHAR},
       </if>
-      <if test="record.hours != null" >
+      <if test="record.hours != null">
         hours = #{record.hours,jdbcType=VARCHAR},
       </if>
-      <if test="record.store != null" >
+      <if test="record.store != null">
         store = #{record.store,jdbcType=VARCHAR},
       </if>
-      <if test="record.startTime != null" >
+      <if test="record.startTime != null">
         startTime = #{record.startTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.endTime != null" >
+      <if test="record.endTime != null">
         endTime = #{record.endTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.projectName != null" >
+      <if test="record.projectName != null">
         projectName = #{record.projectName,jdbcType=VARCHAR},
       </if>
-      <if test="record.field != null" >
+      <if test="record.field != null">
         field = #{record.field,jdbcType=VARCHAR},
       </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null">
+        createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExample" parameterType="map">
     update t_contract
     set id = #{record.id,jdbcType=VARCHAR},
     employer = #{record.employer,jdbcType=VARCHAR},
@@ -272,54 +291,62 @@
     startTime = #{record.startTime,jdbcType=TIMESTAMP},
     endTime = #{record.endTime,jdbcType=TIMESTAMP},
     projectName = #{record.projectName,jdbcType=VARCHAR},
-    field = #{record.field,jdbcType=VARCHAR}
-    <if test="_parameter != null" >
+    field = #{record.field,jdbcType=VARCHAR},
+    status = #{record.status,jdbcType=INTEGER},
+    createTime = #{record.createTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.nsccsz.entity.Contract" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.nsccsz.entity.Contract">
     update t_contract
-    <set >
-      <if test="employer != null" >
+    <set>
+      <if test="employer != null">
         employer = #{employer,jdbcType=VARCHAR},
       </if>
-      <if test="userAid != null" >
+      <if test="userAid != null">
         userAid = #{userAid,jdbcType=INTEGER},
       </if>
-      <if test="laborer != null" >
+      <if test="laborer != null">
         laborer = #{laborer,jdbcType=VARCHAR},
       </if>
-      <if test="userBid != null" >
+      <if test="userBid != null">
         userBid = #{userBid,jdbcType=INTEGER},
       </if>
-      <if test="coreness != null" >
+      <if test="coreness != null">
         coreness = #{coreness,jdbcType=VARCHAR},
       </if>
-      <if test="monthly != null" >
+      <if test="monthly != null">
         monthly = #{monthly,jdbcType=VARCHAR},
       </if>
-      <if test="hours != null" >
+      <if test="hours != null">
         hours = #{hours,jdbcType=VARCHAR},
       </if>
-      <if test="store != null" >
+      <if test="store != null">
         store = #{store,jdbcType=VARCHAR},
       </if>
-      <if test="startTime != null" >
+      <if test="startTime != null">
         startTime = #{startTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="endTime != null" >
+      <if test="endTime != null">
         endTime = #{endTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="projectName != null" >
+      <if test="projectName != null">
         projectName = #{projectName,jdbcType=VARCHAR},
       </if>
-      <if test="field != null" >
+      <if test="field != null">
         field = #{field,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        createTime = #{createTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.nsccsz.entity.Contract" >
+  <update id="updateByPrimaryKey" parameterType="com.nsccsz.entity.Contract">
     update t_contract
     set employer = #{employer,jdbcType=VARCHAR},
       userAid = #{userAid,jdbcType=INTEGER},
@@ -332,7 +359,9 @@
       startTime = #{startTime,jdbcType=TIMESTAMP},
       endTime = #{endTime,jdbcType=TIMESTAMP},
       projectName = #{projectName,jdbcType=VARCHAR},
-      field = #{field,jdbcType=VARCHAR}
+      field = #{field,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      createTime = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

@@ -1,13 +1,14 @@
 package com.nsccsz.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class Contract implements Serializable {
+@JsonSerialize(include =  JsonSerialize.Inclusion.NON_NULL)
+public class Contract {
     private String id;
 
     private String employer;
@@ -35,5 +36,9 @@ public class Contract implements Serializable {
     private String projectName;
 
     private String field;
+
+    private Integer status;
+
+    private Date createTime;
 
 }

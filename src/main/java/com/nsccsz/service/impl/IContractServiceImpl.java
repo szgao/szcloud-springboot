@@ -4,11 +4,14 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.nsccsz.common.ServerResponse;
 import com.nsccsz.entity.Contract;
+import com.nsccsz.entity.ContractExample;
 import com.nsccsz.mapper.ContractMapper;
 import com.nsccsz.service.IContractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,6 +32,52 @@ public class IContractServiceImpl implements IContractService {
 
     @Override
     public ServerResponse saveOrUpdateProduct(Contract contract) {
-        return null;
+        if(contract != null){
+            if(contract.getId()!=null){
+                int rowCount = contractMapper.updateByPrimaryKey(contract);
+                if(rowCount > 0){
+                    return ServerResponse.createBySuccess("合同信息更新成功");
+                }
+            }else{
+               int rowCount = contractMapper.insert(contract);
+               if(rowCount > 0){
+                   return ServerResponse.createBySuccess("新增合同成功");
+               }
+                return ServerResponse.createBySuccess("新增合同失败");
+            }
+        }
+        return ServerResponse.createByErrorMessage("新增或更新合同参数不正确");
+    }
+
+    @Override
+    public ServerResponse delete(String ids) {
+        if(ids != null){
+            Contract contract =  new Contract();
+            contract.setId(ids);
+            contract.setStatus(0);
+            contract.setCreateTime(new Date());
+            if(ids.contains("-")){
+                List<String> del_ids = new ArrayList<>();
+                String[] str_ids = ids.split("-");
+                for(String id : str_ids){
+                    del_ids.add(id);
+                }
+                ContractExample example = new ContractExample();
+                ContractExample.Criteria criteria = example.createCriteria();
+                criteria.andIdIn(del_ids);
+                int rowCount = contractMapper.updateByExampleSelective(contract,example);
+                if(rowCount > 0){
+                    return ServerResponse.createBySuccess("批量删除成功");
+                }
+                return ServerResponse.createBySuccess("批量删除失败");
+            }else{
+                int rowCount = contractMapper.updateByPrimaryKeySelective(contract);
+                if(rowCount > 0){
+                    return ServerResponse.createBySuccess("合同删除成功");
+                }
+                return ServerResponse.createBySuccess("合同删除失败");
+            }
+        }
+        return ServerResponse.createByErrorMessage("合同删除失败");
     }
 }

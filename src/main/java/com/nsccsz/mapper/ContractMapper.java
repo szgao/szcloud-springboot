@@ -30,4 +30,5 @@ public interface ContractMapper {
     int updateByPrimaryKeySelective(Contract record);
 
     int updateByPrimaryKey(Contract record);
+
 }

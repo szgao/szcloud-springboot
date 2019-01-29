@@ -6,10 +6,7 @@ import com.nsccsz.service.IContractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 合同管理
@@ -35,6 +32,13 @@ public class ContractController {
                                           Model model){
         return iContractService.getContractList(pageNum,pageSize);
 
+    }
+
+    @RequestMapping(value="/delete.do/{ids}")
+    @ResponseBody
+    public ServerResponse deleteContract(@PathVariable("ids") String ids){
+        //填充我们增加产品的业务逻辑
+        return iContractService.delete(ids);
     }
 
     /**
