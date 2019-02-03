@@ -10,6 +10,7 @@ if (url.indexOf("newsCategoryManage") > 0
 }
 
 // 提示条配置
+var toastr = "";
 toastr.options = {
 	"closeButton" : true,
 	"debug" : false,

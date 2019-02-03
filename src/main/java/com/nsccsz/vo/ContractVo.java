@@ -1,14 +1,14 @@
-package com.nsccsz.entity;
+package com.nsccsz.vo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 
 import java.util.Date;
 
+/**
+ * Created by kj on 2019/2/2.
+ */
 @Data
-@JsonSerialize(include =  JsonSerialize.Inclusion.NON_NULL)
-public class Contract {
+public class ContractVo {
     private String id;
 
     private String employer;
@@ -28,17 +28,12 @@ public class Contract {
     private String store;
 
 
-    private Date startTime;
+    private String startTime;
 
 
-    private Date endTime;
+    private String endTime;
 
     private String projectName;
 
     private String field;
-
-    private Integer status;
-
-    private Date createTime;
-
 }

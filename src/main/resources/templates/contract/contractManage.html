@@ -1,208 +1,196 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>后台信息管理系统</title>
+    <title>INSPINIA | Login</title>
+    <link th:href="favicon.ico" rel="shortcut icon" />
+    <link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/assets/css/font-awesome.min.css}" rel="stylesheet" />
+    <link th:href="@{/assets/css/animate.css}" rel="stylesheet" />
+    <link th:href="@{/assets/css/style.css}" rel="stylesheet" />
+    <link th:href="@{/assets/css/plugins/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet" />
 
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
-    <link th:href="@{/font-awesome/css/font-awesome.css}" rel="stylesheet" />
-    <link th:href="@{/css/style.css}" rel="stylesheet" />
-
-    <link th:href="@{/css/plugins/iCheck/custom.css}" rel="stylesheet"/>
-    <link th:href="@{/css/plugins/footable/footable.core.css}" rel="stylesheet"/>
 </head>
-<body>
 
-<div id="wrapper">
-    <nav class="navbar-default navbar-static-side" role="navigation" th:include="nav :: navigation"></nav>
-    <div id="page-wrapper" class="gray-bg">
-        <div class="border-bottom" th:include="header :: headerTop"></div>
-        <div class="row wrapper border-bottom white-bg page-heading" th:fragment="headerNav">
-            <div class="col-lg-10">
-                <h2>合同管理</h2>
-                <ol class="breadcrumb">
-                    <li>
-                        <a href="#">首页</a>
-                    </li>
-                    <li>
-                        <a>合同管理</a>
-                    </li>
-                    <li class="active">
-                        <strong>合同管理</strong>
-                    </li>
-                </ol>
-            </div>
-            <div class="col-lg-2">
-            </div>
-        </div>
-
-        <div class="wrapper wrapper-content animated fadeInRight">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-title">
-                            <h5>搜索&amp;操作</h5>
-                            <div class="ibox-tools">
-                                <a class="collapse-link">
-                                    <i class="fa fa-chevron-up"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="ibox-content" style="display: block;">
-                            <form action="itemManage_0_0_0">
-                                <div class="row">
-                                    <div class="col-sm-2 m-b-xs">
-                                        <input id="title" name="title" placeholder="合同标题" class="form-control" type="text" th:value="${item.title}"/>
-                                    </div>
-                                    <div class="col-sm-2 m-b-xs">
-                                       <select name="cid" id="cid" class="form-control" >
-                                            <option value="0" th:selected="${item.cid==0}">--请选择合同分类--</option>
-                                            <option th:each="ic : ${itemCategoryList}" th:value="${ic.id}" th:text="${ic.name}" th:selected="${ic.id==item.cid}">分类</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-sm-2 m-b-xs">
-                                        <input id="minPrice" name="minPrice" class="form-control" type="text" th:value="${item.minPrice}" placeholder="最低价格" />
-                                    </div>
-                                    <div class="col-sm-2 m-b-xs">
-                                        <input id="maxPrice" name="maxPrice"  class="form-control" type="text" th:value="${item.maxPrice}" placeholder="最高价格"/>
-                                    </div>
-                                    <div class="col-sm-2 m-b-xs">
-                                        <button class="btn btn-primary btn-block" type="submit"><i class="fa fa-search"></i>&nbsp;&nbsp;&nbsp;&nbsp;<strong>搜索</strong></button>
-                                    </div>
-                                    <div class="col-sm-2 m-b-xs">
-                                        <a th:href="@{'download1'}" class="btn btn-primary btn-block" >&nbsp;&nbsp;&nbsp;&nbsp;<strong>导出</strong></a>
-                                    </div>
-                                </div>
-                            </form>
-                            <div class="row">
-                                <div class="col-sm-6 m-b-xs">
-                                    <a th:href="@{itemEdit}" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="left" title="" data-original-title="Refresh inbox"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;&nbsp;新增合同&nbsp;&nbsp;&nbsp;&nbsp;</a>
-                                </div>
-                                <div class="col-sm-6 m-b-xs">
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
+<body class="gray-bg">
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>合同管理</h5>
                 </div>
-                <div class="col-lg-12">
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-title">
-                            <h5>合同列表</h5>
-                            <div class="ibox-tools">
-                                <a class="collapse-link">
-                                    <i class="fa fa-chevron-up"></i>
-                                </a>
+                <div class="ibox-content">
+                    <p>
+                        <button class="btn btn-success " type="button" onclick="add();"><i class="fa fa-plus"></i>&nbsp;添加</button>
+                    </p>
+                    <hr></hr>
+                    <div class="row row-lg">
+                        <div class="col-sm-12">
+                            <!-- Example Card View -->
+                            <div class="example-wrap">
+                                <div class="example">
+                                    <table id="table_list"></table>
+                                </div>
                             </div>
-                        </div>
-                        <div class="ibox-content">
-                            <div class="table-responsive">
-                                <table class=" table table-hover" data-page-size="10">
-                                    <thead>
-                                    <tr>
-                                        <th width="5%">ID</th>
-                                        <th width="39%">合同标题</th>
-                                        <th width="8%">分类</th>
-                                        <th width="8%">价格</th>
-                                        <th width="15%">库存数量</th>
-                                        <th width="15%">更新时间</th>
-                                        <!--<th width="10%">推荐状态</th>-->
-                                        <th>操作</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:each="item : ${itemList}">
-                                        <td th:text="${item.id}">Onions</td>
-                                        <td th:text="${item.title}">Onions</td>
-                                        <td th:text="${item.categoryName}">Onions</td>
-                                        <td th:text="${item.price}">Onions</td>
-                                        <td th:text="${item.num}">Onions</td>
-                                        <td th:text="${item.updatedStr}">Onions</td>
-                                     
-                                        <td>
-                                            <a th:href="@{'itemEdit?id='+${item.id}}" title="修改"><i class="fa fa-edit text-navy"></i></a>
-                                            &nbsp;&nbsp;&nbsp;&nbsp;
-                                            <a href="#" th:onclick="'javascript:updateState('+${item.id}+',2,0);'" title="删除"><i class="fa fa-trash-o text-navy"></i></a>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                    <tfoot>
-                                    <tr>
-                                        <td colspan="8">
-                                            <ul id="pageHTML" class="pagination pull-right"></ul>
-                                        </td>
-                                    </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
+                            <!-- End Example Card View -->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="footer" th:include="footer :: copyright"></div>
     </div>
+
 </div>
 
-<!-- Mainly scripts -->
-<script th:src="@{/js/jquery-2.1.1.js}"></script>
-<script th:src="@{/js/bootstrap.min.js}"></script>
-<script th:src="@{/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
-<script th:src="@{/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
+<!-- 全局js -->
+<script th:src="@{/assets/js/jquery.min.js}"></script>
+<script th:src="@{/assets/js/bootstrap.min.js}"></script>
+
+<!-- Bootstrap table -->
+<script th:src="@{/assets/js/plugins/bootstrap-table/bootstrap-table.min.js}"></script>
+<script th:src="@{/assets/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js}"></script>
+<script th:src="@{/assets/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}"></script>
 
 <!-- Peity -->
-<script th:src="@{/js/plugins/peity/jquery.peity.min.js}"></script>
+<script th:src="@{/assets/js/plugins/peity/jquery.peity.min.js}"></script>
 
-<!-- Custom and plugin javascript -->
-<script th:src="@{/js/inspinia.js}"></script>
-<script th:src="@{/js/plugins/pace/pace.min.js}"></script>
+<script th:src="@{/assets/js/plugins/layer/layer.min.js}"></script>
 
-<!-- iCheck -->
-<script th:src="@{/js/plugins/iCheck/icheck.min.js}"></script>
-
-<!-- Peity -->
-<script th:src="@{/js/demo/peity-demo.js}"></script>
-
-<!-- FooTable -->
-<script th:src="@{/js/plugins/footable/footable.all.min.js}"></script>
-
-<!-- common -->
-<script th:src="@{/js/common.js}"></script>
+<!-- 自定义js -->
+<script th:src="@{/assets/js/content.js}"></script>
 
 <script th:inline="javascript">
-    var pageHTML = [[${pageHTML}]];
     $(document).ready(function () {
-        $("#pageHTML").html(pageHTML);
+        //初始化表格,动态从服务器加载数据
+        $("#table_list").bootstrapTable({
+            //使用get请求到服务器获取数据
+            method: "POST",
+            //必须设置，不然request.getParameter获取不到请求参数
+            contentType: "application/x-www-form-urlencoded",
+            //获取数据的Servlet地址
+            url: "list",
+            //表格显示条纹
+            striped: true,
+            //启动分页
+            pagination: true,
+            //每页显示的记录数
+            pageSize: 10,
+            //当前第几页
+            pageNumber: 1,
+            //记录数可选列表
+            pageList: [5, 10, 15, 20, 25],
+            //是否启用查询
+            search: true,
+            //是否启用详细信息视图
+            detailView:true,
+            //表示服务端请求
+            sidePagination: "server",
+            //设置为undefined可以获取pageNumber，pageSize，searchText，sortName，sortOrder
+            //设置为limit可以获取limit, offset, search, sort, order
+            queryParamsType: "undefined",
+            queryParams: function queryParams(params) {   //设置查询参数
+                var param = {
+                    pageNum: params.pageNumber,
+                    pageSize: params.pageSize
+                };
+                return param;
+            },
+            //json数据解析
+            responseHandler: function(res) {
+                return {
+                    "rows": res.data.list,
+                    "total": res.data.total
+                };
+            },
+            //数据列
+            columns: [{
+                title: "ID",
+                field: "id",
+            },{
+                title: "项目名称",
+                field: "projectName"
+            },{
+                title: "甲方单位",
+                field: "employer",
+            },{
+                title: "甲方联系人",
+                field: "userAid"
+            },{
+                title: "乙方单位",
+                field: "laborer",
+            },{
+                title: "乙方联系人",
+                field: "userBid"
+            },{
+                title: "核数",
+                field: "coreness"
+            },{
+                title: "月数",
+                field: "monthly"
+            },{
+                title: "机时",
+                field: "hours",
+
+            },{
+                title: "存储",
+                field: "store",
+            },{
+                title: "合同开始时间",
+                field: "startTime",
+            },{
+                title: "合同截止时间",
+                field: "endTime",
+            },{
+                title: "所属领域",
+                field: "field",
+            }
+                ,{
+                    title: "操作",
+                    field: "empty",
+                    formatter: function (value, row, index) {
+                        var operateHtml = '<button class="btn btn-primary btn-xs" type="button" onclick="edit(\''+row.id+'\')"><i class="fa fa-edit"></i>&nbsp;修改</button> &nbsp;';
+                        operateHtml = operateHtml + '<button class="btn btn-danger btn-xs" type="button" onclick="del(\''+row.id+'\')"><i class="fa fa-remove"></i>&nbsp;删除</button> &nbsp;';
+                        return operateHtml;
+                    }
+                }]
+        });
     });
 
-    /*<![CDATA[*/
-    function updateState(id,state,commendState){
-        var deleteTag;
-        if(state==2){
-            deleteTag = confirm("确定删除此条信息?");
-        } else {
-            deleteTag = true;
-        }
-        if(deleteTag){
-            $.ajax({
-                type: "POST",
-                url: "itemEditState?id="+id,
-                contentType: "application/json; charset=utf-8",
-                success: function(msg){
-                    window.location.reload();
-                },
-                error: function(){
-                    alert("系统异常！");
-                }
-            });
-        }
+    function edit(id){
+        layer.open({
+            type: 2,
+            title: '合同修改',
+            shadeClose: true,
+            shade: false,
+            area: ['893px', '600px'],
+            content: 'edit/' + id,
+            end: function(index){
+                $('#table_list').bootstrapTable("refresh");
+            }
+        });
     }
-    /*]]>*/
-</script>
+    function del(id){
+    layer.confirm('确定删除吗?', {icon: 3, title:'提示'}, function(index){
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "delete/" + id,
+            success: function(msg){
+                layer.msg(msg.data, {time: 2000},function(){
+                    $('#table_list').bootstrapTable("refresh");
+                    layer.close(index);
+                });
+            }
+        });
+    });
+    }
 
+</script>
 </body>
 
 </html>

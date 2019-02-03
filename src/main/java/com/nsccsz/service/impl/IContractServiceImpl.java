@@ -7,6 +7,8 @@ import com.nsccsz.entity.Contract;
 import com.nsccsz.entity.ContractExample;
 import com.nsccsz.mapper.ContractMapper;
 import com.nsccsz.service.IContractService;
+import com.nsccsz.util.DateTimeUtil;
+import com.nsccsz.vo.ContractVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -79,5 +81,30 @@ public class IContractServiceImpl implements IContractService {
             }
         }
         return ServerResponse.createByErrorMessage("合同删除失败");
+    }
+
+    @Override
+    public ContractVo find(String id) {
+        Contract contract = contractMapper.selectByPrimaryKey(id);
+        ContractVo contractVo = assembleContractVo(contract);
+        return contractVo;
+    }
+
+    private ContractVo assembleContractVo(Contract contract) {
+        ContractVo contractVo =  new ContractVo();
+        contractVo.setCoreness(contract.getCoreness());
+        contractVo.setEmployer(contract.getEmployer());
+        contractVo.setProjectName(contract.getProjectName());
+        contractVo.setField(contract.getField());
+        contractVo.setHours(contract.getHours());
+        contractVo.setLaborer(contract.getLaborer());
+        contractVo.setMonthly(contract.getMonthly());
+        contractVo.setStore(contract.getStore());
+        contractVo.setUserAid(contract.getUserAid());
+        contractVo.setUserBid(contract.getUserBid());
+        contractVo.setStartTime(DateTimeUtil.dateToStr(contract.getStartTime()));
+        contractVo.setEndTime(DateTimeUtil.dateToStr(contract.getEndTime()));
+
+        return contractVo;
     }
 }
