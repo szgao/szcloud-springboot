@@ -213,7 +213,7 @@
                 $.ajax({
                     type: "POST",
                     dataType: "json",
-                    url: "${ctx!}/admin/contract/edit",
+                    url: "save",
                     data: $(form).serialize(),
                     success: function(msg){
                         layer.msg(msg.message, {time: 2000},function(){
